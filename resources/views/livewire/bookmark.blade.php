@@ -40,20 +40,58 @@
     </div>
 
     @if (count($bookmarks) != 0)
-        <table class="table table-striped mt-4" style="width:50% ; margin :auto">
+        <table class="table table-striped mt-4" style="width:100% ; margin :auto">
             <thead>
                 <tr>
                     <th>Title</th>
                     <th>Content</th>
                     <th>Notes</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($bookmarks as $item)
                     <tr wire:key="{{ $item->id }}" wire:transition>
-                        <td>{{ $item->title }}</td>
-                        <td><a href="{{ $item->url }}" target="_blank">{{ $item->url }}</a></td>
-                        <td>{{ $item->notes }}</td>
+                        <td>
+                            @if ($editingBookmarkId === $item->id)
+                                <input type="text" wire:model="editingTitle" class="form-control">
+                                @error('editingTitle')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            @else
+                                {{ $item->title }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($editingBookmarkId === $item->id)
+                                <input type="url" wire:model="editingUrl" class="form-control">
+                                @error('editingUrl')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            @else
+                                <a href="{{ $item->url }}" target="_blank">{{ $item->url }}</a>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($editingBookmarkId === $item->id)
+                                <textarea wire:model="editingNotes" class="form-control"></textarea>
+                                @error('editingNotes')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            @else
+                                {{ $item->notes }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($editingBookmarkId === $item->id)
+                                <button wire:click="update" class="btn btn-success m-1">Save</button>
+                                <button wire:click="cancelEdit" class="btn btn-secondary m-1">Cancel</button>
+                            @else
+                                <button wire:click="edit({{ $item->id }})" class="btn btn-info m-1">Edit</button>
+                                <button wire:click="delete({{ $item->id }})" class="btn btn-danger m-1"
+                                    onclick="return confirm('Are you sure you want to delete this bookmark?')">Delete</button>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
