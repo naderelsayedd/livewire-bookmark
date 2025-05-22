@@ -1,3 +1,4 @@
+
 <div>
     <form wire:submit="save" style="width: 50%;margin:auto;" class="text-center mt-5">
         <h3>Add Bookmarks</h3>
@@ -36,7 +37,7 @@
     </form>
 
     <div class="mt-4" style="width: 50%; margin: auto">
-        <input type="text" wire:model.live="search" class="form-control" placeholder="Search posts...">
+        <input type="text" wire:model.live="search" class="form-control" placeholder="Search Your Bookmarks...">
     </div>
 
     @if (count($bookmarks) != 0)
@@ -97,6 +98,6 @@
             </tbody>
         </table>
     @else
-        <h4 class="m-5  text-center text-primary">No posts here</h4>
+        <h4 class="m-5  text-center text-primary">No Bookmarks here</h4>
     @endif
 </div>
